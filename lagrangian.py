@@ -6,9 +6,12 @@ Created on Wed Apr 22 02:12:43 2020
 @author: matteo
 """
 
-from sympy import Symbol, diff
+from sympy import *
 from sympy.utilities.lambdify import lambdify
-
+import sys
+from csv import reader
+import matplotlib.pyplot as plt
+import numpy as np
 
 def lagrange(x, data_points, i):
     P = 1
@@ -18,12 +21,33 @@ def lagrange(x, data_points, i):
             
     return P
     
-def main(data_points):
+def main(data_points, file):
     x = Symbol('x')
     polynomial = 0
     for i in range(0, len(data_points)):
         L = lagrange(x, data_points, i)
         polynomial += L * data_points[i][1]
-        L = lambdify(x, L, 'numpy')
+    f = open(file, 'w')
+    f.write(str(polynomial))
+    f.close()
+    L = lambdify(x, polynomial, 'numpy')
     return L
     
+if __name__ == '__main__':
+    file = sys.argv[1]
+    data = np.array([])
+    with open(file, 'r') as csvfile:
+        csvreader = reader(csvfile, delimiter=',')
+        for row in csvreader:
+            data = np.append(data, row, axis = 0)
+
+    #The negative -1 allows the reshape function to determine the number of columns
+    data = np.reshape(data, (2, -1))
+    data = data.T
+    data = data.astype(float)
+    x = data[:, 0]
+    y = data[:, 1]
+    H = main(data, sys.argv[2])
+    plt.scatter(x, y)
+    plt.plot(x, H(x))
+    plt.show()
