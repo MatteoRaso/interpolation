@@ -9,5 +9,4 @@ you can easily plug numbers into it.
 delimiter = ','
 
 Interpolation Methods:
-	Lagrangian Interpolation
-	,Hermite Interpolation
+	Lagrangian Interpolation, Hermite Interpolation
