@@ -10,5 +10,4 @@ delimiter = ','
 
 Interpolation Methods:
 	Lagrangian Interpolation
-	
-	Hermite Interpolation
+	,Hermite Interpolation
